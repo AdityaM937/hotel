@@ -12,7 +12,8 @@ exports.validate = (method) => {
                body('useremail', 'Invalid email').exists().isEmail(),
                body('password').exists().notEmpty(),
                body('phone', 'Invalid phone number').notEmpty().isNumber().isLength({min:10}),
-            ]
+            ];
         }
+        case 'search'
     }
 }
