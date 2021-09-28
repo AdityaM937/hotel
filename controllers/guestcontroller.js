@@ -85,31 +85,25 @@ try{
     queryText = `insert into tbl_reservation(checkin,checkout,guest_id) values($1,$2,$3)
     `;
     result = await query(queryText, bindVars);
-    const checkin = new Date(bindVars[0]);
-    const checkout = new Date(bindVars[1]);
-    var str = "2021/09/27";
-var str2  = "2021/10/05";
-var strToDate = new Date(str);
-var strToDate2 = new Date(str2);
-strToDate2.setDate(strToDate2.getDate() -10)
-    queryText = `update tbl_reservation totalnight=$2 where guest_id = $3`;
-    result = await query(queryText,bindVars);
-    //  console.log(result);
+    queryText = `select (date(checkout) - date(checkin)) as totalnight from tbl_reservation where guest_id = $1`;
+    result = await query(queryText,[bindVars[2]]);
+    queryText = `update tbl_reservation set totalnight = $2 where guest_id=$1`;
+    result = await query(queryText,[bindVars[2],result.rows[0].totalnight]);
     bindVars = bindVars[2];
 
-    queryText = `select g.guestid, g.guestname,g.guestcompany,g.guestphone,
-    g.guestemail,g.guestgender,g.guestaddress,
-    r.checkin, r.checkout, r.totalnight
-    from tbl_guest g 
-    full join tbl_reservation r on r.guest_id = g.guestid
-    where r.guest_id=$1`;
-    result = await query(queryText, [bindVars]);
+    // queryText = `select g.guestid, g.guestname,g.guestcompany,g.guestphone,
+    // g.guestemail,g.guestgender,g.guestaddress,
+    // r.checkin, r.checkout, r.totalnight
+    // from tbl_guest g 
+    // full join tbl_reservation r on r.guest_id = g.guestid
+    // where r.guest_id=$1`;
+    // result = await query(queryText, [bindVars]);
 
     if(result.rowCount > 0 ) {
         res.status(200).json({
             status :true,
             message : `success`,
-            data : result.rows
+            id : [bindVars]
         });
      }else{
          res.status(201).json({
