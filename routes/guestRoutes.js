@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const guestController = require('../controllers/guestcontroller');
+const guestController = require('../controllers/guestController');
 
 router.post('/guest/',guestController.addGuest);
 router.delete('/guest/:id',guestController.deleteGuest);
