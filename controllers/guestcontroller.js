@@ -1,6 +1,7 @@
 const query = require('../lib/query');
 const path = require('path');
 const {AppError} = require('../utils/appError');
+const bcryptjs = require('bcryptjs');
 const {body,params, validationResult} = require('express-validator');
 
 exports.validate = (method) => {
@@ -67,7 +68,6 @@ try{
     };
     value = check(value);
    
-
     bindVars =[
         value,
         req.body.guestname,

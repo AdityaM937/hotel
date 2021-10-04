@@ -49,7 +49,7 @@ exports.addStaff = async (req,res,next) => {
     try{
         const errors = validationResult(req);
         if(!errors.notEmpty()){
-            return (new AppError(400, 'Validation Error', errors,errors, res));
+            return (new AppError(400, 'Validation Error', errors.errors, res));
         }
         let bindVars;
         let queryText;
@@ -111,7 +111,7 @@ exports.addStaff = async (req,res,next) => {
     try{
         const errors = validationResult(req);
         if(!errors.notEmpty()){
-            return (new AppError(400, 'Validation Error', errors,errors, res));
+            return (new AppError(400, 'Validation Error', errors.errors, res));
         }
         let bindVars;
         let queryText;
@@ -176,7 +176,7 @@ exports.addStaff = async (req,res,next) => {
     try{
         const errors = validationResult(req);
         if(!errors.notEmpty()){
-            return (new AppError(400, 'Validation Error', errors,errors, res));
+            return (new AppError(400, 'Validation Error', errors.errors, res));
         }
         let bindVars;
         let queryText;
@@ -213,7 +213,7 @@ exports.addStaff = async (req,res,next) => {
         try{
             const errors = validationResult(req);
             if(!errors.notEmpty()){
-                return (new AppError(400, 'Validation Error', errors,errors, res));
+                return (new AppError(400, 'Validation Error', errors.errors, res));
             }
             const bindVars = [
                 req.params.id
@@ -247,7 +247,7 @@ exports.addStaff = async (req,res,next) => {
         try{
    
             if(!errors.notEmpty()){
-                return (new AppError(400, 'Validation Error', errors,errors, res));
+                return (new AppError(400, 'Validation Error', errors.errors, res));
             }
             const bindVars = [
     

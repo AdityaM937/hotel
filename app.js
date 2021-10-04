@@ -63,15 +63,28 @@ app.use(express.urlencoded({
     extended: true
 }));
 
-const verifyjwtToken = async (req, res, next) => {
+// var verifyjwtToken = (req, res, next) => {
+//     var token = req.headers['authorization'];
+//     jwt.verifyWebToken(token).then((data)=>{
+//         req.decoded = data;
+//         console.log(data);
+//         next();
+//     }).catch(err => {
+//         res.statuscode = 401
+//         return res.send('UNAUTHORIZED!!!');
+//     });
+// }
+
+var verifyjwtToken = async (req,res,next) => {
+
     const token = req.headers['authorization'];
-    jwt.verifyWebToken(token).then((data)=>{
+    jwt.jwtVerifyToken(token).then(function(data){
         req.decoded = data;
         console.log(data);
         next();
-    }).catch(err => {
-        res.statuscode = 401
-        return res.send('UNAUTHORIZED!!!');
+    }).catch(function(err){
+        res.statusCode = 401;
+        return res.send('UNAUTHORIZED!');
     });
 }
 

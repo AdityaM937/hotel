@@ -17,6 +17,10 @@ exports.validate = (method)=>{
 
 exports.adminLogin = async (req, res, next) => {
     try{
+        const errors = validationResult(req);
+        if(!errors.isEmpty()) {
+            return ( new AppError(400, 'Validation Error', errors.errors,res));
+        }
         const bindVars = [
             req.body.user_email,
             req.body.password,
@@ -35,8 +39,10 @@ exports.adminLogin = async (req, res, next) => {
                 const user = {
                     user_id: result.rows[0].id,
                     user_email: result.rows[0].user_email,
-                    user_name: result.rows[0].user_name,
-                    is_admin : 1
+                    user_name: result.rows[0].username,
+                    user_type: result.rows[0].user_type,
+                    is_admin : 1,
+                    
                 };
                 const token = await jwt.jwtToken(user);
                 console.log(token);

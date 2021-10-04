@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const staffController = require('../../controllers/manager/staffController');
+const staffController = require('../controllers/staffController');
 
 router.post('/staff/',staffController.addStaff);
 router.delete('/staff/:id',staffController.deleteStaff);

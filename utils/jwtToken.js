@@ -11,16 +11,13 @@ exports.jwtToken = (data) => {
     });
 }
 
-exports.verifyWebToken = (data) => {
+exports.jwtVerifyToken = (data) => {
     return new Promise((resolve, reject) => {
         jwt.verify(data,'Morphling@!',(err,decoded)=>{
             if(decoded.is_admin){
                 const queryText = `select * from tbl_admin_login where id=$1`;
-                const result = await query(queryText,[req.decoded.user_id]);
-                if(result.rows.length > 0)
+              //  query(queryText,[req.decoded.user_id]);
                 resolve(decoded);
-                else
-                reject(err);
             }else{
                 resolve(decoded);
             }
