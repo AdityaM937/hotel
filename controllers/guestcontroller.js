@@ -1,6 +1,7 @@
 const query = require('../lib/query');
 const path = require('path');
-const {validation, body} = require('express-validator');
+const {AppError} = require('../utils/appError');
+const {body,params, validationResult} = require('express-validator');
 
 exports.validate = (method) => {
     switch (method) {
@@ -41,6 +42,10 @@ exports.validate = (method) => {
 
 exports.addGuest = async (req,res,next) => {
 try{
+    const errors = validationResult(req);
+    if(!errors.notEmpty()) {
+        return ( new AppError(400, 'Validation Error', errors.errors,res));
+    }
     let bindVars;
     let queryText;
     let result;

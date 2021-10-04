@@ -1,7 +1,7 @@
 const guestRoutes = require('./guestRoutes');
-const staffRoutes = require('./manager/staffRoute');
-module.exports = (app) => {
-    app.use('/api', guestRoutes);
-    app.use('/api', staffRoutes);
+const staffRoutes = require('./staffRoute');
+module.exports = (app,verifyWebToken) => {
+    app.use('/api',verifyWebToken, guestRoutes);
+    app.use('/api',verifyWebToken, staffRoutes);
  
 }

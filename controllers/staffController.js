@@ -1,6 +1,7 @@
-const query = require('../../lib/query');
+const query = require('../lib/query');
 const path = require('path');
-const {validation, body} = require('express-validator');
+const {AppError} =require('../utils/appError');
+const {body, params, validationResult} = require('express-validator');
 
 exports.validate = (method) => {
     switch (method) {
@@ -13,7 +14,7 @@ exports.validate = (method) => {
                body('phone', 'Invalid phone number').notEmpty().isNumeric().isLength({min:10}),
             ];
         }
-        case 'searchStaff' :{
+        case 'getStaff' :{
            return[ body('id','Staff Id cannot be empty').notEmpty(),
             body('name', 'Name cannot be empty').notEmpty()
         ];
@@ -46,6 +47,10 @@ alter table tbl_staff alter column staffid set default nextval('tbl_staff_staffi
 */
 exports.addStaff = async (req,res,next) => {
     try{
+        const errors = validationResult(req);
+        if(!errors.notEmpty()){
+            return (new AppError(400, 'Validation Error', errors,errors, res));
+        }
         let bindVars;
         let queryText;
         let result;
@@ -104,6 +109,10 @@ exports.addStaff = async (req,res,next) => {
     /** Update staff details */
     exports.updateStaff = async (req,res,next) => {
     try{
+        const errors = validationResult(req);
+        if(!errors.notEmpty()){
+            return (new AppError(400, 'Validation Error', errors,errors, res));
+        }
         let bindVars;
         let queryText;
         let result;
@@ -165,6 +174,10 @@ exports.addStaff = async (req,res,next) => {
     
     exports.deleteStaff = async (req,res,next) => {
     try{
+        const errors = validationResult(req);
+        if(!errors.notEmpty()){
+            return (new AppError(400, 'Validation Error', errors,errors, res));
+        }
         let bindVars;
         let queryText;
         let result;
@@ -198,6 +211,10 @@ exports.addStaff = async (req,res,next) => {
     
     exports.getStaff = async (req,res,next) => {
         try{
+            const errors = validationResult(req);
+            if(!errors.notEmpty()){
+                return (new AppError(400, 'Validation Error', errors,errors, res));
+            }
             const bindVars = [
                 req.params.id
             ];
@@ -228,6 +245,10 @@ exports.addStaff = async (req,res,next) => {
     
     exports.listStaff = async (req,res,next) => {
         try{
+   
+            if(!errors.notEmpty()){
+                return (new AppError(400, 'Validation Error', errors,errors, res));
+            }
             const bindVars = [
     
             ];
