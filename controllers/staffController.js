@@ -7,32 +7,32 @@ exports.validate = (method) => {
     switch (method) {
         case 'addStaff' : {
            return [
-               body('name', 'Name cannot be empty').notEmpty(),
-               body('check-in', 'Check in has to be specified').notEmpty(),
+               body('name', 'Name cannot be empty').isEmpty(),
+               body('check-in', 'Check in has to be specified').isEmpty(),
                body('useremail', 'Invalid email').exists().isEmail(),
-               body('address', 'company cannot be empty').exists().notEmpty(),
-               body('phone', 'Invalid phone number').notEmpty().isNumeric().isLength({min:10}),
+               body('address', 'company cannot be empty').exists().isEmpty(),
+               body('phone', 'Invalid phone number').isEmpty().isNumeric().isLength({min:10}),
             ];
         }
         case 'getStaff' :{
-           return[ body('id','Staff Id cannot be empty').notEmpty(),
-            body('name', 'Name cannot be empty').notEmpty()
+           return[ body('id','Staff Id cannot be empty').isEmpty(),
+            body('name', 'Name cannot be empty').isEmpty()
         ];
         }
         case 'updateStaff' :{
            return[
-            body('name', 'Name cannot be empty').notEmpty(),
-            body('check-in', 'Check-in has to be specified').notEmpty(),
-            body('check-out', 'Check out has to be specified').notEmpty(),
+            body('name', 'Name cannot be empty').isEmpty(),
+            body('check-in', 'Check-in has to be specified').isEmpty(),
+            body('check-out', 'Check out has to be specified').isEmpty(),
             body('useremail', 'Invalid email').exists().isEmail(),
-            body('password').exists().notEmpty(),
-            body('phone', 'Invalid phone number').notEmpty().isNumeric().isLength({min:10}),
+            body('password').exists().isEmpty(),
+            body('phone', 'Invalid phone number').isEmpty().isNumeric().isLength({min:10}),
         ];
         }
         case 'deleteStaff' : {
             return [
-            body('id','Staff Id cannot be empty').notEmpty(),
-            body('name', 'Name cannot be empty').notEmpty()
+            body('id','Staff Id cannot be empty').isEmpty(),
+            body('name', 'Name cannot be empty').isEmpty()
             ];
         }
     }
@@ -47,10 +47,12 @@ alter table tbl_staff alter column staffid set default nextval('tbl_staff_staffi
 */
 exports.addStaff = async (req,res,next) => {
     try{
-        const errors = validationResult(req);
-        if(!errors.notEmpty()){
-            return (new AppError(400, 'Validation Error', errors.errors, res));
-        }
+            const error = validationResult(req);
+   
+    if(!error.isEmpty()){
+        return next ( newError(400, 'Validation Error', error.errors , res));
+    }
+
         let bindVars;
         let queryText;
         let result;
@@ -109,10 +111,12 @@ exports.addStaff = async (req,res,next) => {
     /** Update staff details */
     exports.updateStaff = async (req,res,next) => {
     try{
-        const errors = validationResult(req);
-        if(!errors.notEmpty()){
-            return (new AppError(400, 'Validation Error', errors.errors, res));
-        }
+            const error = validationResult(req);
+   
+    if(!error.isEmpty()){
+        return next ( newError(400, 'Validation Error', error.errors , res));
+    }
+
         let bindVars;
         let queryText;
         let result;
@@ -174,10 +178,12 @@ exports.addStaff = async (req,res,next) => {
     
     exports.deleteStaff = async (req,res,next) => {
     try{
-        const errors = validationResult(req);
-        if(!errors.notEmpty()){
-            return (new AppError(400, 'Validation Error', errors.errors, res));
-        }
+            const error = validationResult(req);
+   
+    if(!error.isEmpty()){
+        return next ( newError(400, 'Validation Error', error.errors , res));
+    }
+
         let bindVars;
         let queryText;
         let result;
@@ -212,7 +218,7 @@ exports.addStaff = async (req,res,next) => {
     exports.getStaff = async (req,res,next) => {
         try{
             const errors = validationResult(req);
-            if(!errors.notEmpty()){
+            if(!errors.isEmpty()){
                 return (new AppError(400, 'Validation Error', errors.errors, res));
             }
             const bindVars = [
@@ -245,16 +251,22 @@ exports.addStaff = async (req,res,next) => {
     
     exports.listStaff = async (req,res,next) => {
         try{
-   
-            if(!errors.notEmpty()){
+            const errors = validationResult(req);
+            if(!errors.isEmpty()){
                 return (new AppError(400, 'Validation Error', errors.errors, res));
             }
             const bindVars = [
     
             ];
-            const queryText =`select * from tbl_staff
+            let queryText=``;
+            if(req.query.PageIndex && req.query.PageSize)
+            queryText =`select * from tbl_staff
             order by staffid
             limit ${req.query.PageSize} offset ${req.query.PageSize}*${req.query.PageIndex-1}
+            `;
+            else
+            queryText =`select * from tbl_staff
+            order by staffid
             `;
             const result = await query(queryText,bindVars);
             const rows = result.rows;
