@@ -9,7 +9,7 @@ const jwt=require('./utils/jwtToken');
 const bcryptjs = require('bcryptjs');
 const morganBody = require('morgan-body');
 const compression = require('compression');
-
+const log = require('./middleware/log');
 const bodyParser = require('body-parser');
 
 //const acl = require('express-acl');
@@ -19,10 +19,10 @@ const app = express();
 
 
 app.use(express.static(path.join(__dirname, 'public')));
-morganBody(app);
+// morganBody(app);
 // Allow Cross-Origin requests
 app.use(cors());
-morganBody(app);
+// morganBody(app);
 // Set security HTTP headers
 app.use(helmet());
 
@@ -63,47 +63,25 @@ app.use(express.urlencoded({
     extended: true
 }));
 
-// var verifyjwtToken = (req, res, next) => {
-//     var token = req.headers['authorization'];
-//     jwt.verifyWebToken(token).then((data)=>{
-//         req.decoded = data;
-//         console.log(data);
-//         next();
-//     }).catch(err => {
-//         res.statuscode = 401
-//         return res.send('UNAUTHORIZED!!!');
-//     });
-// }
+app.use(log.logger);
 
-var verifyjwtToken = async (req,res,next) => {
+
+
+var verifyjwtToken =  (req,res,next) => {
 
     const token = req.headers['authorization'];
+
     jwt.jwtVerifyToken(token).then(function(data){
         req.decoded = data;
-        console.log(data);
         next();
     }).catch(function(err){
+
         res.statusCode = 401;
         return res.send('UNAUTHORIZED!');
     });
 }
 
-const Routes = require('./routes/commonRoute')(app,verifyjwtToken);
+const Routes = require('./routes/commonroute')(app,verifyjwtToken);
 module.exports = app;
 
-
-process.on('uncaughtException', err => {
-    console.log('UNCAUGHT EXCEPTION!!! shutting down...');
-    console.log(err.name, err.message);
-    process.exit(1);
-});
-
-
-process.on('unhandledRejection', err => {
-    console.log('UNHANDLED REJECTION!!!  shutting down ...');
-    console.log(err.name, err.message);
-    server.close(() => {
-        process.exit(1);
-    });
-});
 

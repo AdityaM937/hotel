@@ -1,9 +1,11 @@
 
-exports.AppError = async (statuscode, status, message, res) => {
-    res.status(statuscode).json({
-      StatusCode: statuscode,
-      Status: status,
-      message: message,
-    });
-  };
+class AppError extends Error {
+  constructor(statuscode, status, message){
+   super(message);
+   this.statuscode=statuscode;
+   this.status=status;
+   this.message=message;
+    }
+  }
 
+module.exports = AppError;

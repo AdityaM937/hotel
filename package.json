@@ -39,6 +39,7 @@
     "node-mailer": "^0.1.1",
     "pg": "^8.7.1",
     "pg-format": "^1.0.4",
+    "request-info": "^0.1.0",
     "validator": "^13.6.0",
     "xss-clean": "^0.1.1"
   },

@@ -2,6 +2,7 @@ const query = require('../lib/query');
 const jwt = require('../utils/jwtToken');
 const bcryptjs = require('bcryptjs');
 const {body,params,validationResult} = require('express-validator');
+const AppError = require('../utils/appError');
 
 exports.validate = (method)=>{
     switch(method){
@@ -19,13 +20,12 @@ exports.adminLogin = async (req, res, next) => {
     try{
         const errors = validationResult(req);
         if(!errors.isEmpty()) {
-            return ( new AppError(400, 'Validation Error', errors.errors,res));
+            return ( new AppError(400, 'Validation Error', errors.errors),req,res,next);
         }
         const bindVars = [
             req.body.user_email,
             req.body.password,
         ];
-
         const queryText = `select * from tbl_admin_login where user_email=$1`;
         const result = await query(queryText, [req.body.user_email]);
         if(result.rows.length > 0){
@@ -40,12 +40,10 @@ exports.adminLogin = async (req, res, next) => {
                     user_id: result.rows[0].id,
                     user_email: result.rows[0].user_email,
                     user_name: result.rows[0].username,
-                    user_type: result.rows[0].user_type,
-                    is_admin : 1,
+                    user_type: result.rows[0].user_type
                     
                 };
                 const token = await jwt.jwtToken(user);
-                console.log(token);
                 result.rows[0].password="";
                 res.status(200).json({
                     statusCode: 200,
