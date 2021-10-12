@@ -40,7 +40,8 @@ exports.adminLogin = async (req, res, next) => {
                     user_id: result.rows[0].id,
                     user_email: result.rows[0].user_email,
                     user_name: result.rows[0].username,
-                    user_type: result.rows[0].user_type
+                    user_type: result.rows[0].user_type,
+                    is_admin:1
                     
                 };
                 const token = await jwt.jwtToken(user);

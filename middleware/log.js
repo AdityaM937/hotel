@@ -4,9 +4,9 @@ const query = require('../lib/query');
 exports.logger = (req,res,next) => {
 
     const reqData = info(req);
-    console.log(reqData);
-    console.log(req.connection.remoteAddress +" "+req.headers['x-forwarded-for']);
-    console.log(res.__morgan_body_response);
+    // console.log(reqData);
+    // console.log(req.connection.remoteAddress +" "+req.headers['x-forwarded-for']);
+    // console.log(res.__morgan_body_response);
     // res.on("finish",async () => {
     //     const uid = res.req.decoded?res.req.decoded.user_id:JSON.parse(res.__morgan_body_response).uid;
     //     const name=res.req.decoded?res.req.decoded.user_name:0;

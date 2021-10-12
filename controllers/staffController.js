@@ -253,7 +253,7 @@ exports.addStaff = async (req,res,next) => {
         try{
             const errors = validationResult(req);
             if(!errors.isEmpty()){
-                return (new AppError(400, 'Validation Error', errors.errors, res));
+                return (new AppError(400, 'Validation Error', errors.errors),req,res,next);
             }
             const bindVars = [
     

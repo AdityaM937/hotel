@@ -11,6 +11,7 @@ const morganBody = require('morgan-body');
 const compression = require('compression');
 const log = require('./middleware/log');
 const bodyParser = require('body-parser');
+const acl = require('./middleware/permissions');
 
 //const acl = require('express-acl');
 const fileUpload = require('express-fileupload');
@@ -22,7 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // morganBody(app);
 // Allow Cross-Origin requests
 app.use(cors());
-// morganBody(app);
+morganBody(app);
 // Set security HTTP headers
 app.use(helmet());
 
@@ -81,7 +82,7 @@ var verifyjwtToken =  (req,res,next) => {
     });
 }
 
-const Routes = require('./routes/commonroute')(app,verifyjwtToken);
+const Routes = require('./routes/commonroute')(app,verifyjwtToken,acl);
 module.exports = app;
 
 
