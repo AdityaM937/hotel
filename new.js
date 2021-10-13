@@ -24,22 +24,23 @@ const howSum = (targetSum , number , data={})=>{
     return null;
 };
 
-const shortSum = (targetSum ,number)=>{
+const shortSum = (targetSum ,number,data={})=>{
+    if(targetSum in data) return data[targetSum];
     if(targetSum ===0) return [];
     if(targetSum <0) return null;
     let compare = null;
     for(let num of number){
         const remainder = targetSum -num;
-        const result = shortSum(remainder,number);
+        const result = shortSum(remainder,number,data);
         if(result !=null){
             if(compare ===null || compare.length > [...result,num].length)
-            compare= [...result,num];
-            
+                compare= [...result,num];
+        
         }
     }
-   
+   data[targetSum] =compare;
     return compare;
     
 };
 
-console.log(shortSum(8,[5,2,3]));
+console.log(shortSum(100,[1,5,2,25]));
