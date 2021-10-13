@@ -2,7 +2,7 @@ const query= require('../lib/query');
 const {AppError} = require('../utils/appError');
 const {body, params, validationResult} =require('express-validator');
 
-exports.validation = (method) => {
+exports.validate = (method) => {
     switch (method) {
         case 'addRoom' : {
             return [
@@ -12,7 +12,13 @@ exports.validation = (method) => {
                 body('rate(USD)','Rate in Dollars was not provided').notEmpty().exists()
             ];
         }
-        case 'removeRoom' :{
+        case 'deleteRoom' :{
+            return [
+                body('roomid','Room number was not provided').notEmpty().exists(),
+            ];
+        }
+
+        case 'getRoom' :{
             return [
                 body('roomid','Room number was not provided').notEmpty().exists(),
             ];
