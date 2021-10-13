@@ -4,7 +4,7 @@ const query = require('../lib/query');
 exports.logger = (req,res,next) => {
 
     const reqData = info(req);
-    // console.log(reqData);
+    console.log(reqData);
     // console.log(req.connection.remoteAddress +" "+req.headers['x-forwarded-for']);
     // console.log(res.__morgan_body_response);
     // res.on("finish",async () => {

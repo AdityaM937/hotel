@@ -259,13 +259,23 @@ exports.listGuest = async (req,res,next) => {
         const bindVars = [
 
         ];
-        const queryText =`select g.guestid, g.guestname,g.guestcompany,g.guestphone,
+        let queryText=``;
+        if(req.query.PageIndex && req.query.PageSize)
+        queryText =`select g.guestid, g.guestname,g.guestcompany,g.guestphone,
         g.guestemail,g.guestgender,g.guestaddress,
         r.checkin, r.checkout, r.totalnight , count(*) over() as fullcount
         from tbl_guest g 
         left outer join tbl_reservation r on r.guest_id = g.guestid
         order by g.guestid
         limit ${req.query.PageSize} offset ${req.query.PageSize}*${req.query.PageIndex-1}
+        `;
+        else
+        queryText =`select g.guestid, g.guestname,g.guestcompany,g.guestphone,
+        g.guestemail,g.guestgender,g.guestaddress,
+        r.checkin, r.checkout, r.totalnight , count(*) over() as fullcount
+        from tbl_guest g 
+        left outer join tbl_reservation r on r.guest_id = g.guestid
+        order by g.guestid
         `;
         const result = await query(queryText,bindVars);
         const rows = result.rows;
