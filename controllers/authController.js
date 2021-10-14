@@ -1,6 +1,6 @@
 const query = require('../lib/query');
 const jwt = require('../utils/jwtToken');
-const bcryptjs = require('bcryptjs');
+const bcryptjs = require('bcrypt');
 const {body,params,validationResult} = require('express-validator');
 const AppError = require('../utils/appError');
 

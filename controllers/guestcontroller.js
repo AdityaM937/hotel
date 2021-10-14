@@ -1,7 +1,7 @@
 const query = require('../lib/query');
 const path = require('path');
 const {AppError} = require('../utils/appError');
-const bcryptjs = require('bcryptjs');
+const bcryptjs = require('bcrypt');
 const {body,params, validationResult} = require('express-validator');
 
 exports.validate = (method) => {
