@@ -48,7 +48,7 @@ exports.getFreeRoom = async (req, res, next)=>{
         if(!errors.isEmpty()){
             return next( new AppError(400,'Validation Error', errors.errors),req,res,next);
         }
-        const bindVars = [req.body.roomtype];
+        const bindVars = [(req.body.roomtype).toLowerCase()];
         let queryText=``;
         if(req.query.PageSize && req.query.PageIndex)
         queryText = `select * from tbl_room where vaccancy='yes' AND roomtype=$1

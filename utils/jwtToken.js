@@ -5,7 +5,7 @@ exports.jwtToken = (data) => {
         jsonWebToken.sign(data, 'Morphling@!', {expiresIn : '24 hours'},(err,token) => {
             if(err) reject(err);
             else{
-                console.log('token : '+token);
+              //  console.log('token : '+token);
                 resolve(token);
             }
         });
@@ -32,7 +32,8 @@ exports.jwtRegisterToken = (data)=>{
     return new Promise((resolve, reject)=>{
         jsonWebToken.sign(data,'Morphling@!',{expiresIn: '1 day'}, (err, token) => {
             if(err) reject(err);
-            else {resolve(token); console.log(token);}
+            else {resolve(token); //console.log(token);
+            }
         });
     });
 }

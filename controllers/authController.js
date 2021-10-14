@@ -50,7 +50,8 @@ exports.adminLogin = async (req, res, next) => {
                     statusCode: 200,
                     response: {
                         accessToken : token,
-                        userData : result.rows[0]   
+                        userData : result.rows[0],
+                        Admin_status : user.is_admin?true:false   
                     },
                     
                 });

@@ -2,6 +2,7 @@ const query =require('../lib/query');
 
 exports.authorize = async (req, res, next)=> {
     const is_admin = req.decoded.is_admin;
+    console.log(is_admin);
     const user_type = req.decoded.user_type;
     if(!is_admin && req.originalUrl.split('/').find(element => element ==='admin')){
         return res.json({
@@ -20,7 +21,7 @@ exports.authorize = async (req, res, next)=> {
         return next();
         else if( user_type == 2 && url.find(element=>element==='guest'))
         return next();
-        else if( user_type == 2 && url.find(element=>element==='room') && req.method !== 'DELETE')
+        else if( user_type == 2 && url.find(element=>element.indexOf('room')>=0) && req.method !== 'DELETE')
         return next();
         else if( user_type == 2 && url.find(element=>element=='staff') && req.method ==='GET')
         return next();
